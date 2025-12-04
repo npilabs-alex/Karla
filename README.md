@@ -28,34 +28,45 @@ A platform for collecting structured data from geo-restricted and JS-heavy websi
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    ORCHESTRATOR (Claude)                     │
-│  - Parse user intent                                         │
-│  - Generate localized search terms                           │
-│  - Select sources based on scoring                           │
-│  - Coordinate regional agents                                │
-│  - Deduplicate and merge                                     │
-└─────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              ▼               ▼               ▼
-┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
-│  AWS ap-south-1  │ │  AWS eu-west-1   │ │  AWS us-east-1   │
-│  (India)         │ │  (Europe)        │ │  (Americas)      │
-│                  │ │                  │ │                  │
-│  - Playwright    │ │  - Playwright    │ │  - Playwright    │
-│  - Proxy pool    │ │  - Proxy pool    │ │  - Proxy pool    │
-└──────────────────┘ └──────────────────┘ └──────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    DATA LAYER                                │
-│  - Postgres (structured)                                     │
-│  - Vector DB (embeddings for dedup)                          │
-│  - S3 (raw HTML/screenshots)                                 │
-│  - Metadata store (source scoring, job history)              │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Orchestrator["🎯 ORCHESTRATOR (Claude)"]
+        O1[Parse user intent]
+        O2[Generate localized search terms]
+        O3[Select sources based on scoring]
+        O4[Coordinate regional agents]
+        O5[Deduplicate and merge]
+    end
+
+    subgraph Agents["🌍 REGIONAL AGENTS"]
+        subgraph India["AWS ap-south-1 (India)"]
+            I1[Playwright]
+            I2[Proxy pool]
+        end
+        subgraph Europe["AWS eu-west-1 (Europe)"]
+            E1[Playwright]
+            E2[Proxy pool]
+        end
+        subgraph Americas["AWS us-east-1 (Americas)"]
+            A1[Playwright]
+            A2[Proxy pool]
+        end
+    end
+
+    subgraph Data["💾 DATA LAYER"]
+        D1[(Postgres)]
+        D2[(Vector DB)]
+        D3[(S3)]
+        D4[(Metadata store)]
+    end
+
+    Orchestrator --> India
+    Orchestrator --> Europe
+    Orchestrator --> Americas
+
+    India --> Data
+    Europe --> Data
+    Americas --> Data
 ```
 
 ## Documentation
