@@ -1,1 +1,55 @@
 # Scraper
+
+Agentic websearch and scraping system for regional data collection.
+
+## Overview
+
+A platform for collecting structured data from geo-restricted and JS-heavy websites using in-region infrastructure, localised search terms, and intelligent source scoring.
+
+## Key Features
+
+- **In-region scraping**: Deploy Playwright browsers in regional AWS datacenters (e.g., ap-south-1 for India)
+- **Localised discovery**: Search in local languages (Hindi, Marathi, Kannada, etc.) to surface data that English queries miss
+- **Source scoring**: System learns which sources yield best data per category/region
+- **Entity resolution**: Fuzzy matching + LLM to deduplicate records across sources
+- **Confidence scoring**: Multi-source verification with quality scores
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    ORCHESTRATOR (Claude)                     │
+│  - Parse user intent                                         │
+│  - Generate localized search terms                           │
+│  - Select sources based on scoring                           │
+│  - Coordinate regional agents                                │
+│  - Deduplicate and merge                                     │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+│  AWS ap-south-1  │ │  AWS eu-west-1   │ │  AWS us-east-1   │
+│  (India)         │ │  (Europe)        │ │  (Americas)      │
+│                  │ │                  │ │                  │
+│  - Playwright    │ │  - Playwright    │ │  - Playwright    │
+│  - Proxy pool    │ │  - Proxy pool    │ │  - Proxy pool    │
+└──────────────────┘ └──────────────────┘ └──────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    DATA LAYER                                │
+│  - Postgres (structured)                                     │
+│  - Vector DB (embeddings for dedup)                          │
+│  - S3 (raw HTML/screenshots)                                 │
+│  - Metadata store (source scoring, job history)              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Documentation
+
+- [docs/poc/](docs/poc/) - India venues proof of concept
+  - `indian_venues_analysis.md` - Technical analysis and architecture
+  - `phil_memo_venues_poc.md` - PoC summary and recommendations
+  - `salt_proposal.md` - Client proposal
+  - `indian_venues_sample.csv` - Sample scraped data (59 venues)
