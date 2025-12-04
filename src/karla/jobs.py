@@ -6,17 +6,19 @@ from pathlib import Path
 from typing import Optional
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Job(BaseModel):
     """A scraping job configuration."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     name: str
     query: str
     region: str
     cities: list[str] = []
-    schema: str = "default"
+    schema_name: str = Field(default="default", alias="schema")
     sources: list[str] = []
     status: str = "pending"
     created: str = ""
@@ -41,7 +43,7 @@ class JobManager:
         query: str,
         region: str,
         cities: list[str] = None,
-        schema: str = "default",
+        schema_name: str = "default",
         sources: list[str] = None,
     ) -> Job:
         """Create a new job."""
@@ -52,7 +54,7 @@ class JobManager:
             query=query,
             region=region,
             cities=cities or [],
-            schema=schema,
+            schema_name=schema_name,
             sources=sources or [],
             status="pending",
             created=now,
@@ -107,4 +109,4 @@ class JobManager:
         """Save a job to disk."""
         path = self._job_path(job.name)
         with open(path, "w") as f:
-            yaml.dump(job.model_dump(), f, default_flow_style=False)
+            yaml.dump(job.model_dump(by_alias=True), f, default_flow_style=False)

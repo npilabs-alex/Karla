@@ -36,7 +36,7 @@ def job_create(
         query=query,
         region=region,
         cities=city_list,
-        schema=schema,
+        schema_name=schema,
     )
 
     console.print(f"[green]✓[/green] Job '[bold]{name}[/bold]' created")
@@ -92,7 +92,7 @@ def job_show(name: str = typer.Argument(..., help="Job name")):
     console.print(f"  Query:   {job.query}")
     console.print(f"  Region:  {job.region}")
     console.print(f"  Cities:  {', '.join(job.cities) if job.cities else 'All'}")
-    console.print(f"  Schema:  {job.schema}")
+    console.print(f"  Schema:  {job.schema_name}")
     console.print(f"  Status:  {job.status}")
     console.print(f"  Created: {job.created}")
 
