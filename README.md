@@ -1,6 +1,18 @@
-# Scraper
+# Karla
 
 Agentic websearch and scraping system for regional data collection.
+
+```
+   ◠ ◠
+    ‿
+  KARLA
+```
+
+## About the Name
+
+Karla is named after the Soviet spymaster in John le Carré's novels - the elusive adversary of George Smiley. Where Smiley painstakingly pieced together fragments of intelligence from multiple sources, Karla operated invisibly behind the Iron Curtain, always present but never seen.
+
+This duality defines our system: a friendly interface (the smiley) backed by a relentless agent that operates where others can't reach - behind geo-blocks, inside JS-rendered walls, speaking local languages. Karla goes where you can't, finds what you need, and brings it back.
 
 ## Overview
 

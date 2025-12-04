@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Agentic websearch and scraping system for regional data collection. The system deploys Playwright browsers in regional AWS datacenters to scrape geo-restricted and JS-heavy websites, using localised search terms and intelligent source scoring.
+**Karla** - Agentic websearch and scraping system for regional data collection. Named after the Soviet spymaster in le Carré's novels; the smiley logo references his adversary George Smiley. The system deploys Playwright browsers in regional AWS datacenters to scrape geo-restricted and JS-heavy websites, using localised search terms and intelligent source scoring.
 
 ## Key Concepts
 
